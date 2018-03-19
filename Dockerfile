@@ -21,19 +21,24 @@ RUN yum update -y && \
 yum clean all && \
 rm -rf /var/cache/yum
 
+
 ENV ASTROPFX $HOME/astrosoft
-ENV CONDAPFX $HOME/anaconda
-ENV CONDAEXE $CONDAPFX/bin/conda
-ENV TEMPO2 /usr/share/tempo2
-ENV CONDAINSTFERMI "$CONDAEXE install -y -n fermi -c conda-forge -c fermi_dev_externals "
 RUN mkdir -p $ASTROPFX
+
+ENV CONDAPFX $HOME/anaconda
 
 COPY setup_anaconda.sh $HOME/setup_anaconda.sh
 RUN sh setup_anaconda.sh && rm setup_anaconda.sh
 
+
+ENV FERMIPFX $CONDAPFX/envs/fermi
+# ENV CONDAINSTFERMI "$source activate fermi && conda install -y -n fermi -c conda-forge -c fermi_dev_externals "
+
 # COPY setup_tempo.sh $HOME/setup_tempo.sh
 # RUN sh setup_tempo.sh && rm setup_tempo.sh
 
+ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
+run mkdir -p $TEMPO2
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 

@@ -26,19 +26,25 @@
 
 # in your build area.
 
-mkdir -p $ASTROPFX
-$CONDAINSTFERMI pgplot
-TEMPO2DIR="tempo2-2018.02.1"
 curl -s -L https://bitbucket.org/psrsoft/tempo2/downloads/tempo2-2018.02.1.tar.gz > tempo2.tar.gz
-tar zxvf tempo2.tar.gz
+tar zxf tempo2.tar.gz
 rm -rf  tempo2.tar.gz
-cd $TEMPO2DIR
-# bootstrap
+cd tempo2-2018.02.1
 cp -r T2runtime $TEMPO2
-./configure --prefix=$ASTROPFX
+./configure \
+  F77=gfortran \
+  --prefix=$ASTROPFX \
+  --with-cfitsio-dir=$FERMIPFX \
+  --with-fftw3-dir=$FERMIPFX \
+  --with-gsl-prefix=$FERMIPFX \
+  CFLAGS=-fPIC \
+  FFLAGS=-fPIC \
+  CXXFLAGS="-I$FERMIPFX/include -I$FERMIPFX/include/pgplot" \
+  LDFLAGS=-L$FERMIPFX/lib \
+  PGPLOT_DIR=$FERMIPFX/lib
 make
 make install
 make plugins
 make plugins-install
 cd ../
-rm -rf $TEMPO2DIR
+rm -rf tempo2-2018.02.1
