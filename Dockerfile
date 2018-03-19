@@ -28,7 +28,7 @@ ENV ASTROPFX $HOME/astrosoft
 RUN mkdir -p $ASTROPFX
 ENV CONDAPFX $HOME/anaconda
 
-# Anaconda and Fermitools + PGPLOT
+# Anaconda Fermitools, and other conda packages
 COPY setup_anaconda.sh $HOME/setup_anaconda.sh
 RUN sh setup_anaconda.sh && rm setup_anaconda.sh
 
@@ -57,7 +57,6 @@ RUN sh setup_ftools.sh && rm setup_ftools.sh
 
 
 # copy build products into new layer
-
 FROM centos:6
 MAINTAINER "Fermi LAT Collaboration"
 RUN yum update -y && \
