@@ -54,6 +54,11 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # RUN sh setup_presto.sh && rm setup_presto.sh
 
 # Heasarc Ftools
+COPY setup_ftools.sh $HOME/setup_ftools.sh
+RUN sh setup_ftools.sh && rm setup_ftools.sh
+
+
+# copy build products into new layer
 
 FROM centos:6
 RUN yum update -y && \
