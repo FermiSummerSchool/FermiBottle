@@ -1,7 +1,5 @@
 FROM centos:6 as builder
 
-MAINTAINER "Fermi LAT Collaboration"
-
 RUN yum update -y && \
 yum install -y \
   bzip2 make \
@@ -61,8 +59,9 @@ RUN sh setup_ftools.sh && rm setup_ftools.sh
 # copy build products into new layer
 
 FROM centos:6
+MAINTAINER "Fermi LAT Collaboration"
 RUN yum update -y && \
-yum install -y
+yum install -y \
   bzip2 make \
   patch sudo \
   tar git \
