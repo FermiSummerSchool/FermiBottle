@@ -1,23 +1,27 @@
-FROM centos:6
+FROM centos:6 as builder
 
 MAINTAINER "Fermi LAT Collaboration"
 
 RUN yum update -y && \
-    yum install -y \
-      bzip2 make \
-      patch sudo \
-      tar git \
-      which \
-      vim emacs \
-      libXext-devel \
-      libXrender-devel \
-      libSM-devel \
-      libX11-devel \
-      mesa-libGL-devel \
-      gcc gcc-c++ \
-      gcc-gfortran \
-      autoconf automake \
-      perl && \
+yum install -y \
+  bzip2 make \
+  patch sudo \
+  tar git \
+  which \
+  vim emacs \
+  libXext-devel \
+  libXrender-devel \
+  libSM-devel \
+  libX11-devel \
+  libXt-devel \
+  mesa-libGL-devel \
+  gcc gcc-c++ \
+  gcc-gfortran \
+  autoconf automake \
+  perl perl-ExtUtils-MakeMaker\
+  ncurses-devel \
+  readline-devel \
+  && \
 yum clean all && \
 rm -rf /var/cache/yum
 
@@ -49,6 +53,32 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # COPY setup_presto.sh $HOME/setup_presto.sh
 # RUN sh setup_presto.sh && rm setup_presto.sh
 
+# Heasarc Ftools
+
+FROM centos:6
+RUN yum update -y && \
+yum install -y
+  bzip2 make \
+  patch sudo \
+  tar git \
+  which \
+  vim emacs \
+  libXext \
+  libXrender \
+  libSM \
+  libX11 \
+  libXt \
+  mesa-libGL \
+  gcc gcc-c++ \
+  gcc-gfortran \
+  perl \
+  ncurses\
+  readline\
+&& \
+yum clean all && \
+rm -rf /var/cache/yum
+COPY --from=builder /anaconda .
+COPY --from=builder /astrosoft .
 VOLUME ["/data"]
 # USER fermistudent
 CMD [ "/bin/bash" ]
