@@ -24,9 +24,9 @@ yum clean all && \
 rm -rf /var/cache/yum
 
 # Top Level Environment variables
-ENV ASTROPFX $HOME/astrosoft
+ENV ASTROPFX /home/astrosoft
 RUN mkdir -p $ASTROPFX
-ENV CONDAPFX $HOME/anaconda
+ENV CONDAPFX /home/anaconda
 
 # Anaconda Fermitools, and other conda packages
 COPY setup_anaconda.sh $HOME/setup_anaconda.sh
@@ -55,6 +55,9 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 COPY setup_ftools.sh $HOME/setup_ftools.sh
 RUN sh setup_ftools.sh && rm setup_ftools.sh
 
+RUN echo 'PATH=${CONDAPFX}/bin:${ASTROPFX}/bin:$PATH\n \
+HEADAS=${ASTROPFX}/x86 /n \
+alias heainit=source $HEADAS/heainit.sh' >> .bashrc
 
 # copy build products into new layer
 FROM centos:6
@@ -80,8 +83,8 @@ yum install -y \
 && \
 yum clean all && \
 rm -rf /var/cache/yum
-COPY --from=builder /anaconda .
-COPY --from=builder /astrosoft .
+COPY --from=builder /anaconda /home/anaconda
+COPY --from=builder /astrosoft /home/astrosoft
 VOLUME ["/data"]
 # USER fermistudent
 CMD [ "/bin/bash" ]
