@@ -26,6 +26,7 @@
 
 # in your build area.
 
+mkdir -p $TEMPO2
 curl -s -L https://bitbucket.org/psrsoft/tempo2/downloads/tempo2-2018.02.1.tar.gz > tempo2.tar.gz
 tar zxf tempo2.tar.gz
 rm -rf  tempo2.tar.gz
@@ -34,14 +35,19 @@ cp -r T2runtime $TEMPO2
 ./configure \
   F77=gfortran \
   --prefix=$ASTROPFX \
+  --x-includes=$FERMIPFX/include \
+  --x-libraries="$FERMIPFX/lib -lXdmcp" \
+  --with-pgplot-extra="-lX11 -lXdmcp -lz" \
   --with-cfitsio-dir=$FERMIPFX \
   --with-fftw3-dir=$FERMIPFX \
   --with-gsl-prefix=$FERMIPFX \
-  CFLAGS=-fPIC \
+  --with-x \
+  CFLAGS="-fPIC -I$FERMIPFX/include -I$FERMIPFX/include/pgplot" \
   FFLAGS=-fPIC \
   CXXFLAGS="-I$FERMIPFX/include -I$FERMIPFX/include/pgplot" \
   LDFLAGS=-L$FERMIPFX/lib \
-  PGPLOT_DIR=$FERMIPFX/lib
+  PGPLOT_DIR="$FERMIPFX/lib -lpng" \
+  PGPLOT_DEV=/xwindow
 make
 make install
 make plugins

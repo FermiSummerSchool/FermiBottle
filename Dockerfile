@@ -21,34 +21,33 @@ RUN yum update -y && \
 yum clean all && \
 rm -rf /var/cache/yum
 
-
+# Top Level Environment variables
 ENV ASTROPFX $HOME/astrosoft
 RUN mkdir -p $ASTROPFX
-
 ENV CONDAPFX $HOME/anaconda
 
+# Anaconda and Fermitools + PGPLOT
 COPY setup_anaconda.sh $HOME/setup_anaconda.sh
 RUN sh setup_anaconda.sh && rm setup_anaconda.sh
 
-
+# Fermitools prefix
 ENV FERMIPFX $CONDAPFX/envs/fermi
-# ENV CONDAINSTFERMI "$source activate fermi && conda install -y -n fermi -c conda-forge -c fermi_dev_externals "
+ENV LD_LIBRARY_PATH $FERMIPFX/lib
 
-# COPY setup_tempo.sh $HOME/setup_tempo.sh
-# RUN sh setup_tempo.sh && rm setup_tempo.sh
+# Tempo
+ENV TEMPO $ASTROPFX/tempo
+COPY setup_tempo.sh $HOME/setup_tempo.sh
+RUN sh setup_tempo.sh && rm setup_tempo.sh
 
+# Tempo2
 ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
-run mkdir -p $TEMPO2
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 
-# RUN curl -s -L http://heasarc.gsfc.nasa.gov/FTP/software/lheasoft/release/heasoft-6.23src.tar.gz > heasoft.tar.gz && \
-#   tar zxf heasoft.tar.gz
-
-# RUN conda install --yes -c conda-forge -c fermi_dev_externals fermitools
-
-# RUN ${HOME}/anaconda/bin/conda install --yes -c conda-forge -c fermi_dev_externals WHATEVER_WE_NAME_SCIENCETOOLS!!!!!
-# RUN ${HOME}/anaconda/bin/conda install --yes -c conda-forge -c fermi_dev_externals ape
+# Presto
+# ENV PRESTO $ASTROPFX/presto
+# COPY setup_presto.sh $HOME/setup_presto.sh
+# RUN sh setup_presto.sh && rm setup_presto.sh
 
 VOLUME ["/data"]
 # USER fermistudent
