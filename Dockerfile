@@ -55,9 +55,9 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 COPY setup_ftools.sh $HOME/setup_ftools.sh
 RUN sh setup_ftools.sh && rm setup_ftools.sh
 
-RUN echo 'PATH=${CONDAPFX}/bin:${ASTROPFX}/bin:$PATH\n \
-HEADAS=${ASTROPFX}/x86 /n \
-alias heainit=source $HEADAS/heainit.sh' >> .bashrc
+# RUN echo -e "PATH=${CONDAPFX}/bin:${ASTROPFX}/bin:$PATH\n\
+# HEADAS=${ASTROPFX}/x86_64-unknown-linux-gnu-libc2.12\n\
+# alias heainit=source $HEADAS/heainit.sh" > /home/.bashrc
 
 # copy build products into new layer
 FROM centos:6
@@ -83,9 +83,10 @@ yum install -y \
 && \
 yum clean all && \
 rm -rf /var/cache/yum
-COPY --from=builder /anaconda /home/anaconda
-COPY --from=builder /astrosoft /home/astrosoft
+COPY --from=builder /home /home
+COPY entrypoint /opt/docker/bin/entrypoint
 VOLUME ["/data"]
 # USER fermistudent
+ENTRYPOINT ["/opt/docker/bin/entrypoint"]
 CMD [ "/bin/bash" ]
 
