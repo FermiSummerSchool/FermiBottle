@@ -28,6 +28,10 @@ ENV ASTROPFX /home/astrosoft
 RUN mkdir -p $ASTROPFX
 ENV CONDAPFX /home/anaconda
 
+# Heasarc Ftools
+COPY setup_ftools.sh $HOME/setup_ftools.sh
+RUN sh setup_ftools.sh && rm setup_ftools.sh
+
 # Anaconda Fermitools, and other conda packages
 COPY setup_anaconda.sh $HOME/setup_anaconda.sh
 RUN sh setup_anaconda.sh && rm setup_anaconda.sh
@@ -50,10 +54,6 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # ENV PRESTO $ASTROPFX/presto
 # COPY setup_presto.sh $HOME/setup_presto.sh
 # RUN sh setup_presto.sh && rm setup_presto.sh
-
-# Heasarc Ftools
-COPY setup_ftools.sh $HOME/setup_ftools.sh
-RUN sh setup_ftools.sh && rm setup_ftools.sh
 
 # RUN echo -e "PATH=${CONDAPFX}/bin:${ASTROPFX}/bin:$PATH\n\
 # HEADAS=${ASTROPFX}/x86_64-unknown-linux-gnu-libc2.12\n\
@@ -84,9 +84,7 @@ yum install -y \
 yum clean all && \
 rm -rf /var/cache/yum
 COPY --from=builder /home /home
-COPY entrypoint /opt/docker/bin/entrypoint
 VOLUME ["/data"]
-# USER fermistudent
-ENTRYPOINT ["/opt/docker/bin/entrypoint"]
 CMD [ "/bin/bash" ]
-
+ENTRYPOINT ["/home/anaconda/bin/tini", "--", "/opt/docker/bin/entrypoint"]
+COPY entrypoint /opt/docker/bin/entrypoint
