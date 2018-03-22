@@ -33,7 +33,7 @@ docker run -it
 
 ### Upload to dockerhub 
 
- 1. Find the hash of your image `docker image`
+ 1. Find the hash of your image `docker images`
  1. Tag the image `docker tag IMAGE_HASH areustle/fermibottle:TAGNAME`
  1. Push to dockerhub `docker push areustle/fermibottle`
 
