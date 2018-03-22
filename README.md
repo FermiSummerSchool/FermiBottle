@@ -15,7 +15,10 @@
 ### Run the image to create a container
 
 ```
-docker run -it -v HOST_SHARED_DIRECTORY:/data areustle/fermibottle
+docker run -it \
+-v HOST_SHARED_DIRECTORY:/data \
+-e HOST_USER_ID=`id -u $USER` \
+areustle/fermibottle
 ```
 
 ## Build instructions
