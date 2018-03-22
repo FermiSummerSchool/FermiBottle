@@ -102,7 +102,7 @@ COPY --from=builder /home/astrosoft /home/astrosoft
 
 COPY entrypoint /opt/docker/bin/entrypoint
 
-RUN echo -e 'wheel        ALL=(ALL)       ALL\n\
+RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
 fermi        ALL=NOPASSWD:       ALL\n\
 fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
 

@@ -30,6 +30,7 @@ cd $HOME
 # Source everything that needs to be.
 . /opt/anaconda/bin/activate fermi
 . $HEADAS/headas-init.sh
+chown -R fermi:fermi $HOME/pfiles
 
 # Run whatever the user wants.
 exec /opt/anaconda/bin/gosu fermi "$@"
