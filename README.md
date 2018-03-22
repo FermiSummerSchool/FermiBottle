@@ -14,7 +14,8 @@
 
 ### Run the image to create a container
 
-```docker run -it
+```
+docker run -it
   -v HOST_SHARED_DIRECTORY:/data \
   areustle/fermibottle
 ```
