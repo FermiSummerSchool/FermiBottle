@@ -8,4 +8,4 @@ cd heasoft-6.23/BUILD_DIR
   --with-components="heacore tcltk attitude heatools Xspec ftools "
 ./hmake && ./hmake install
 cd ..
-rm -rf heasoft-6.23
+rm -rf /heasoft-6.23
