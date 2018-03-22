@@ -10,20 +10,18 @@
 
 ##### Using local tarball
 
-`unzip fermibottle.tar.zip`
-`docker load < fermibottle.tar`
+`unzip fermibottle.tar.zip && docker load < fermibottle.tar`
 
 ### Run the image to create a container
 
-`docker run -it
+```docker run -it
   -v HOST_SHARED_DIRECTORY:/data \
   areustle/fermibottle
-`
+```
 
 ## Build instructions
 
-`cd FermiBottle`
-`docker image build -t fermibottle .`
+`cd FermiBottle && docker image build -t fermibottle .`
 
 ## Sharing instructions
 
