@@ -60,6 +60,9 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # COPY setup_presto.sh $HOME/setup_presto.sh
 # RUN sh setup_presto.sh && rm setup_presto.sh
 
+RUN /opt/anaconda/bin/conda install --yes --name fermi -c conda-forge fermipy \
+&& rm -rf /opt/anaconda/pkgs/*
+
 # copy build products into new layer
 FROM centos:6
 MAINTAINER "Fermi LAT Collaboration"
@@ -89,9 +92,22 @@ yum install -y \
 && \
 yum clean all && \
 rm -rf /var/cache/yum
-COPY --from=builder $CONDAPFX $CONDAPFX
-COPY --from=builder $ASTROPFX $ASTROPFX
+
+COPY --from=builder /opt/anaconda /opt/anaconda
+
+COPY --from=builder /home/astrosoft /home/astrosoft
+
+RUN chown -R root:wheel /opt/anaconda && chmod -R g+rwx /opt/anaconda
+RUN chown -R root:wheel /home/astrosoft && chmod -R g+rwx /home/astrosoft
+
 COPY entrypoint /opt/docker/bin/entrypoint
+
+RUN echo 'wheel        ALL=(ALL)       ALL' >> /etc/sudoers
+RUN echo 'fermi        ALL=NOPASSWD:       ALL' >> /etc/sudoers
+RUN echo 'fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
+
 ENTRYPOINT ["/opt/anaconda/bin/tini", "--", "/opt/docker/bin/entrypoint"]
+
 VOLUME ["/data"]
+
 CMD [ "/bin/bash" ]

@@ -5,21 +5,24 @@
 # Adapted from https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
 USER_ID=${HOST_USER_ID:-9001}
 useradd --shell /bin/bash -u $USER_ID -o -c "" -m fermi
+usermod -aG wheel fermi
+echo 'fermi' | passwd fermi --stdin >& /dev/null
 export HOME=/home/fermi
 export USER=fermi
 export LOGNAME=fermi
 export MAIL=/var/spool/mail/fermi
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/anaconda/bin:/home/fermi/astrosoft/bin
 export HEADAS=$HOME/astrosoft/x86_64-unknown-linux-gnu-libc2.12
-# ln -s /opt/anaconda /home/fermi/anaconda
+ln -s /opt/anaconda /home/fermi/anaconda
 ln -s /home/astrosoft /home/fermi/astrosoft
 chown fermi:fermi $HOME
-
+/opt/anaconda/bin/conda config --add channels conda-forge
 
 ## I take a long time, only uncomment me if necessary
 ## |
 ## V
 # chown -R fermi:fermi /opt/anaconda
+# chown -R fermi:fermi /home/astrosoft
 
 # cp /root/.condarc $HOME/.condarc && chown fermi:fermi $HOME/.condarc
 cd $HOME
