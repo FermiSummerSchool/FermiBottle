@@ -16,8 +16,7 @@
 
 ```
 docker run -it
-  -v HOST_SHARED_DIRECTORY:/data \
-  areustle/fermibottle
+  -v HOST_SHARED_DIRECTORY:/data areustle/fermibottle
 ```
 
 ## Build instructions
