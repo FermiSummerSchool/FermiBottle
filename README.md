@@ -16,7 +16,7 @@
 
 ```
 docker run -it \
--v HOST_SHARED_DIRECTORY:/data \
+-v `pwd`:/data \
 -e HOST_USER_ID=`id -u $USER` \
 areustle/fermibottle
 ```
