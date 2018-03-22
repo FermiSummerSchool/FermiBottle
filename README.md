@@ -15,8 +15,21 @@
 ### Run the image to create a container
 
 ```
-docker run -it -v HOST_SHARED_DIRECTORY:/data areustle/fermibottle
+docker run -it \
+-v `pwd`:/data \
+-e HOST_USER_ID=`id -u $USER` \
+areustle/fermibottle
 ```
+
+## Usage instructions
+
+Exit and shutdown an existing container with `exit` in the container's shell
+
+Find the CONTAINER_ID of a container with `docker ps -a`
+
+Restart a stopped container in the background with `docker start CONTAINER_ID` or `docker start CONTAINER_NAME`
+
+Attach to a running container (get into the shell) with `docker attach CONTAINER_ID` or `docker attach CONTAINER_NAME`
 
 ## Build instructions
 
