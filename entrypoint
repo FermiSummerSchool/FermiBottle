@@ -9,9 +9,9 @@ export HOME=/home/fermi
 export USER=fermi
 export LOGNAME=fermi
 export MAIL=/var/spool/mail/fermi
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/fermi/anaconda/bin:/home/fermi/astrosoft/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/anaconda/bin:/home/fermi/astrosoft/bin
 export HEADAS=$HOME/astrosoft/x86_64-unknown-linux-gnu-libc2.12
-ln -s /home/anaconda /home/fermi/anaconda
+# ln -s /opt/anaconda /home/fermi/anaconda
 ln -s /home/astrosoft /home/fermi/astrosoft
 chown fermi:fermi $HOME
 
@@ -19,14 +19,14 @@ chown fermi:fermi $HOME
 ## I take a long time, only uncomment me if necessary
 ## |
 ## V
-# chown -R fermi:fermi /home/fermi/anaconda
+# chown -R fermi:fermi /opt/anaconda
 
 # cp /root/.condarc $HOME/.condarc && chown fermi:fermi $HOME/.condarc
 cd $HOME
 
 # Source everything that needs to be.
-. $HOME/anaconda/bin/activate fermi
+. /opt/anaconda/bin/activate fermi
 . $HEADAS/headas-init.sh
 
 # Run whatever the user wants.
-exec $HOME/anaconda/bin/gosu fermi "$@"
+exec /opt/anaconda/bin/gosu fermi "$@"

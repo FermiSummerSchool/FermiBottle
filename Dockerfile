@@ -2,37 +2,42 @@ FROM centos:6 as builder
 
 RUN yum update -y && \
 yum install -y \
-  bzip2 make \
-  patch sudo \
-  tar git \
-  which \
-  vim emacs \
+  autoconf \
+  automake \
+  bzip2 \
+  emacs \
+  gcc \
+  gcc-c++ \
+  gcc-gfortran \
+  git \
   libXext-devel \
   libXrender-devel \
   libSM-devel \
   libX11-devel \
   libXt-devel \
+  make \
   mesa-libGL-devel \
-  gcc gcc-c++ \
-  gcc-gfortran \
-  autoconf automake \
-  perl perl-ExtUtils-MakeMaker\
   ncurses-devel \
+  patch \
+  perl \
+  perl-ExtUtils-MakeMaker \
   readline-devel \
+  sudo \
+  tar \
+  vim \
+  which \
   && \
 yum clean all && \
 rm -rf /var/cache/yum
 
-# Top Level Environment variables
+# Heasarc Ftools
 ENV ASTROPFX /home/astrosoft
 RUN mkdir -p $ASTROPFX
-ENV CONDAPFX /home/anaconda
-
-# Heasarc Ftools
 COPY setup_ftools.sh $HOME/setup_ftools.sh
 RUN sh setup_ftools.sh && rm setup_ftools.sh
 
 # Anaconda Fermitools, and other conda packages
+ENV CONDAPFX /opt/anaconda
 COPY setup_anaconda.sh $HOME/setup_anaconda.sh
 RUN sh setup_anaconda.sh && rm setup_anaconda.sh
 
@@ -55,36 +60,38 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # COPY setup_presto.sh $HOME/setup_presto.sh
 # RUN sh setup_presto.sh && rm setup_presto.sh
 
-# RUN echo -e "PATH=${CONDAPFX}/bin:${ASTROPFX}/bin:$PATH\n\
-# HEADAS=${ASTROPFX}/x86_64-unknown-linux-gnu-libc2.12\n\
-# alias heainit=source $HEADAS/heainit.sh" > /home/.bashrc
-
 # copy build products into new layer
 FROM centos:6
 MAINTAINER "Fermi LAT Collaboration"
 RUN yum update -y && \
 yum install -y \
-  bzip2 make \
-  patch sudo \
-  tar git \
-  which \
-  vim emacs \
+  bzip2\
+  emacs \
+  gcc \
+  gcc-c++ \
+  gcc-gfortran \
+  git \
   libXext \
   libXrender \
   libSM \
   libX11 \
   libXt \
+  make \
   mesa-libGL \
-  gcc gcc-c++ \
-  gcc-gfortran \
-  perl \
   ncurses\
+  patch \
+  perl \
   readline\
+  sudo \
+  tar \
+  vim \
+  which \
 && \
 yum clean all && \
 rm -rf /var/cache/yum
-COPY --from=builder /home /home
+COPY --from=builder $CONDAPFX $CONDAPFX
+COPY --from=builder $ASTROPFX $ASTROPFX
+COPY entrypoint /opt/docker/bin/entrypoint
+ENTRYPOINT ["/opt/anaconda/bin/tini", "--", "/opt/docker/bin/entrypoint"]
 VOLUME ["/data"]
 CMD [ "/bin/bash" ]
-ENTRYPOINT ["/home/anaconda/bin/tini", "--", "/opt/docker/bin/entrypoint"]
-COPY entrypoint /opt/docker/bin/entrypoint
