@@ -25,7 +25,9 @@ areustle/fermibottle
 
 ### Run the image to create a container (MacOS)
 This requires XQuartz to be installed and the "Allow Connections from Network Clients" option to be selected in 
-XQuartz > Preferences > Security.
+XQuartz > Preferences > Security. Quit XQuartz after setting this option.
+
+On the command line run:
 
 ```
 xhost + 127.0.0.1 && \
