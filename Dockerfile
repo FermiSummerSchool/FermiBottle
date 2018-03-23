@@ -69,6 +69,11 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # copy build products into new layer
 FROM centos:6
 MAINTAINER "Fermi LAT Collaboration"
+
+VOLUME ["/data"]
+
+CMD [ "/bin/bash" ]
+
 RUN yum update -y && \
 yum install -y \
   bzip2\
@@ -76,6 +81,7 @@ yum install -y \
   gcc \
   gcc-c++ \
   gcc-gfortran \
+  gedit \
   git \
   libXext \
   libXrender \
@@ -92,24 +98,18 @@ yum install -y \
   tar \
   vim \
   which \
+  xorg-x11-apps \
 && \
 yum clean all && \
 rm -rf /var/cache/yum
 
-USER fermi
+COPY --from=builder --chown=root:wheel /opt/anaconda /opt/anaconda
+COPY --from=builder --chown=root:wheel /home/astrosoft /home/astrosoft
 
-COPY --from=builder --chown=fermi:wheel /opt/anaconda /opt/anaconda
-
-COPY --from=builder --chown=fermi:wheel /home/astrosoft /home/astrosoft
+RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
+fermi        ALL=NOPASSWD: ALL\n\
+fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
 
 COPY entrypoint /opt/docker/bin/entrypoint
 
-RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
-fermi        ALL=(ALL)    NOPASSWD: ALL\n\
-fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
-
 ENTRYPOINT ["/opt/anaconda/bin/tini", "--", "/opt/docker/bin/entrypoint"]
-
-VOLUME ["/data"]
-
-CMD [ "/bin/bash" ]

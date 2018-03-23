@@ -16,4 +16,5 @@ conda create --name fermi -c conda-forge -c fermi_dev_externals \
   pyyaml \
   --yes
 rm -rf ${CONDAPFX}/pkgs/*
+chown -R :wheel /opt/anaconda
 chmod -R g+rwx /opt/anaconda

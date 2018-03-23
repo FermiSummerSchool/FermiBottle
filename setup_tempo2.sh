@@ -54,3 +54,5 @@ make plugins
 make plugins-install
 cd ../
 rm -rf tempo2-2018.02.1
+chmod -R g+rwx $ASTROPFX
+chown -R :wheel $ASTROPFX

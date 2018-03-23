@@ -12,12 +12,14 @@
 
 `unzip fermibottle.tar.zip && docker load < fermibottle.tar`
 
-### Run the image to create a container
+### Run the image to create a container (Linux)
 
 ```
 docker run -it \
--v `pwd`:/data \
 -e HOST_USER_ID=`id -u $USER` \
+-e DISPLAY=$DISPLAY \
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v `pwd`:/data \
 areustle/fermibottle
 ```
 

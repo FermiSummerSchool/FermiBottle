@@ -10,3 +10,4 @@ cd heasoft-6.23/BUILD_DIR
 cd ..
 rm -rf /heasoft-6.23
 chmod -R g+rwx $ASTROPFX
+chown -R :wheel $ASTROPFX
