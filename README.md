@@ -23,6 +23,19 @@ docker run -it \
 areustle/fermibottle
 ```
 
+### Run the image to create a container (MacOS)
+This requires XQuartz to be installed and the "Allow Connections from Network Clients" option to be selected in 
+XQuartz > Preferences > Security.
+
+```
+xhost + 127.0.0.1 && \
+docker run -it \
+-e HOST_USER_ID=`id -u $USER` \
+-e DISPLAY=docker.for.mac.localhost:0 \
+-v `pwd`:/data \
+areustle/fermibottle
+```
+
 ## Usage instructions
 
 Exit and shutdown an existing container with `exit` in the container's shell
