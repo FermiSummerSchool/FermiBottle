@@ -43,7 +43,7 @@ RUN sh setup_anaconda.sh && rm setup_anaconda.sh
 
 # Fermitools prefix
 ENV FERMIPFX $CONDAPFX/envs/fermi
-ENV LD_LIBRARY_PATH $FERMIPFX/lib
+# ENV LD_LIBRARY_PATH $FERMIPFX/lib
 
 # Tempo
 ENV TEMPO $ASTROPFX/tempo
@@ -60,11 +60,11 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 # COPY setup_presto.sh $HOME/setup_presto.sh
 # RUN sh setup_presto.sh && rm setup_presto.sh
 
-RUN /opt/anaconda/bin/conda install --yes --name fermi -c conda-forge fermipy \
-&& rm -rf /opt/anaconda/pkgs/*
+# RUN /opt/anaconda/bin/conda install --yes --name fermi -c conda-forge fermipy \
+# && rm -rf /opt/anaconda/pkgs/*
 
-RUN chown -R root:wheel /opt/anaconda && chmod -R g+rwx /opt/anaconda
-RUN chown -R root:wheel /home/astrosoft && chmod -R g+rwx /home/astrosoft
+# RUN chmod -R g+rwx /opt/anaconda
+# RUN chmod -R g+rwx /home/astrosoft
 
 # copy build products into new layer
 FROM centos:6
@@ -96,14 +96,16 @@ yum install -y \
 yum clean all && \
 rm -rf /var/cache/yum
 
-COPY --from=builder /opt/anaconda /opt/anaconda
+USER fermi
 
-COPY --from=builder /home/astrosoft /home/astrosoft
+COPY --from=builder --chown=fermi:wheel /opt/anaconda /opt/anaconda
+
+COPY --from=builder --chown=fermi:wheel /home/astrosoft /home/astrosoft
 
 COPY entrypoint /opt/docker/bin/entrypoint
 
 RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
-fermi        ALL=NOPASSWD:       ALL\n\
+fermi        ALL=(ALL)    NOPASSWD: ALL\n\
 fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
 
 ENTRYPOINT ["/opt/anaconda/bin/tini", "--", "/opt/docker/bin/entrypoint"]

@@ -3,8 +3,12 @@
 # Create conda user with the same uid as the host, so the container can write
 # to mounted volumes
 # Adapted from https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
+
 USER_ID=${HOST_USER_ID:-9001}
+echo $HOST_USER_ID
+echo $USER_ID
 useradd --shell /bin/bash -u $USER_ID -o -c "" -m fermi
+usermod -aG root fermi
 usermod -aG wheel fermi
 echo 'fermi' | passwd fermi --stdin >& /dev/null
 export HOME=/home/fermi

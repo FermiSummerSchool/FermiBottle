@@ -9,3 +9,4 @@ cd heasoft-6.23/BUILD_DIR
 ./hmake && ./hmake install
 cd ..
 rm -rf /heasoft-6.23
+chmod -R g+rwx $ASTROPFX
