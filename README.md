@@ -20,6 +20,7 @@ docker run -it \
 -e DISPLAY=$DISPLAY \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`:/data \
+-p 8888:8888 \
 areustle/fermibottle
 ```
 
@@ -37,6 +38,7 @@ docker run -it \
 -e HOST_USER_ID=`id -u $USER` \
 -e DISPLAY=docker.for.mac.localhost:0 \
 -v `pwd`:/data \
+-p 8888:8888 \
 areustle/fermibottle
 ```
 
