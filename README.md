@@ -20,6 +20,25 @@ docker run -it \
 -e DISPLAY=$DISPLAY \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`:/data \
+-p 8888:8888 \
+areustle/fermibottle
+```
+
+### Run the image to create a container (MacOS)
+This requires XQuartz to be installed and the "Allow Connections from Network Clients" option to be selected in 
+XQuartz > Preferences > Security. 
+
+Quit XQuartz after setting this option.
+
+On the command line run:
+
+```
+xhost + 127.0.0.1 && \
+docker run -it \
+-e HOST_USER_ID=`id -u $USER` \
+-e DISPLAY=docker.for.mac.localhost:0 \
+-v `pwd`:/data \
+-p 8888:8888 \
 areustle/fermibottle
 ```
 
@@ -32,6 +51,11 @@ Find the CONTAINER_ID of a container with `docker ps -a`
 Restart a stopped container in the background with `docker start CONTAINER_ID` or `docker start CONTAINER_NAME`
 
 Attach to a running container (get into the shell) with `docker attach CONTAINER_ID` or `docker attach CONTAINER_NAME`
+
+#### Jupyter Notebooks
+
+Run a jupyter notebook from within the container with 
+`jupyter notebook --ip 0.0.0.0 --no-browser`
 
 ## Build instructions
 
