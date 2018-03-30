@@ -18,6 +18,7 @@ export MAIL=/var/spool/mail/fermi
 export PATH=/opt/anaconda/bin:/home/fermi/astrosoft/tempo/bin:/home/fermi/astrosoft/tempo2/bin
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 export HEADAS=$HOME/astrosoft/ftools/x86_64-unknown-linux-gnu-libc2.12
+export TEMPO2=$HOME/astrosoft/tempo2/T2runtime
 
 ## Solve permissions issues
 ln -s /home/astrosoft /home/fermi/astrosoft
@@ -39,6 +40,7 @@ cd $HOME
 # Source everything that needs to be.
 . /opt/anaconda/bin/activate fermi
 . $HEADAS/headas-init.sh
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/anaconda/envs/fermi/lib
 chown -R fermi:fermi $HOME/pfiles
 
 # Run whatever the user wants.

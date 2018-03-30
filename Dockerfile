@@ -49,6 +49,7 @@ COPY setup_tempo.sh $HOME/setup_tempo.sh
 RUN sh setup_tempo.sh && rm setup_tempo.sh
 
 # Tempo2
+ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 
