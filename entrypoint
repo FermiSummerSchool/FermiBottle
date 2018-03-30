@@ -15,8 +15,9 @@ export HOME=/home/fermi
 export USER=fermi
 export LOGNAME=fermi
 export MAIL=/var/spool/mail/fermi
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/anaconda/bin:/home/fermi/astrosoft/bin
-export HEADAS=$HOME/astrosoft/x86_64-unknown-linux-gnu-libc2.12
+export PATH=/opt/anaconda/bin:/home/fermi/astrosoft/tempo/bin:/home/fermi/astrosoft/tempo2/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+export HEADAS=$HOME/astrosoft/ftools/x86_64-unknown-linux-gnu-libc2.12
 
 ## Solve permissions issues
 ln -s /home/astrosoft /home/fermi/astrosoft

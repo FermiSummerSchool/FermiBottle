@@ -92,9 +92,12 @@ yum clean all && \
 rm -rf /var/cache/yum
 
 COPY --from=builder --chown=root:wheel /opt/anaconda /opt/anaconda
-COPY --from=builder --chown=root:wheel /home/astrosoft/ftools /home/astrosoft/ftools
-COPY --from=builder --chown=root:wheel /home/astrosoft/tempo /home/astrosoft/tempo
-COPY --from=builder --chown=root:wheel /home/astrosoft/tempo2 /home/astrosoft/tempo2
+
+ENV ASTROPFX /home/astrosoft
+RUN mkdir -p $ASTROPFX
+COPY --from=builder --chown=root:wheel $ASTROPFX/ftools $ASTROPFX/ftools
+COPY --from=builder --chown=root:wheel $ASTROPFX/tempo  $ASTROPFX/tempo
+COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 
 RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
 fermi        ALL=NOPASSWD: ALL\n\
