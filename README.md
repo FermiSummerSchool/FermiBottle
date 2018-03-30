@@ -52,6 +52,11 @@ Restart a stopped container in the background with `docker start CONTAINER_ID` o
 
 Attach to a running container (get into the shell) with `docker attach CONTAINER_ID` or `docker attach CONTAINER_NAME`
 
+#### Jupyter Notebooks
+
+Run a jupyter notebook from within the container with 
+`jupyter notebook --ip 0.0.0.0 --no-browser`
+
 ## Build instructions
 
 `cd FermiBottle && docker image build -t fermibottle .`
