@@ -74,9 +74,11 @@ VOLUME ["/data"]
 
 CMD [ "/bin/bash" ]
 
-RUN yum update -y && \
+RUN sed -i '/tsflags=nodocs/d' /etc/yum.conf && \
+yum update -y && \
 yum install -y \
-  bzip2\
+  bzip2 \
+  dejavu-lgc-sans-fonts \
   emacs \
   gcc \
   gcc-c++ \

@@ -17,12 +17,15 @@ export LOGNAME=fermi
 export MAIL=/var/spool/mail/fermi
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/anaconda/bin:/home/fermi/astrosoft/bin
 export HEADAS=$HOME/astrosoft/x86_64-unknown-linux-gnu-libc2.12
-# ln -s /opt/anaconda /home/fermi/anaconda
+
+## Solve permissions issues
 ln -s /home/astrosoft /home/fermi/astrosoft
-chown fermi:fermi $HOME
-# chown fermi:fermi /home/fermi/anaconda
-# chown fermi:fermi /home/fermi/astrosoft
 /opt/anaconda/bin/conda config --add channels conda-forge
+chown fermi:fermi $HOME/.condarc
+chown fermi:fermi $HOME/astrosoft
+chown fermi:fermi $HOME
+
+echo "alias notebook='jupyter notebook --ip 0.0.0.0 --no-browser'" >> $HOME/.bashrc
 
 ## I take a long time, only uncomment me if necessary
 ## |
@@ -30,7 +33,6 @@ chown fermi:fermi $HOME
 # chown -R fermi:fermi /opt/anaconda
 # chown -R fermi:fermi /home/astrosoft
 
-# cp /root/.condarc $HOME/.condarc && chown fermi:fermi $HOME/.condarc
 cd $HOME
 
 # Source everything that needs to be.
