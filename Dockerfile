@@ -43,28 +43,14 @@ RUN sh setup_anaconda.sh && rm setup_anaconda.sh
 
 # Fermitools prefix
 ENV FERMIPFX $CONDAPFX/envs/fermi
-# ENV LD_LIBRARY_PATH $FERMIPFX/lib
 
 # Tempo
-ENV TEMPO $ASTROPFX/tempo
 COPY setup_tempo.sh $HOME/setup_tempo.sh
 RUN sh setup_tempo.sh && rm setup_tempo.sh
 
 # Tempo2
-ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
-
-# Presto
-# ENV PRESTO $ASTROPFX/presto
-# COPY setup_presto.sh $HOME/setup_presto.sh
-# RUN sh setup_presto.sh && rm setup_presto.sh
-
-# RUN /opt/anaconda/bin/conda install --yes --name fermi -c conda-forge fermipy \
-# && rm -rf /opt/anaconda/pkgs/*
-
-# RUN chmod -R g+rwx /opt/anaconda
-# RUN chmod -R g+rwx /home/astrosoft
 
 # copy build products into new layer
 FROM centos:6
@@ -106,7 +92,9 @@ yum clean all && \
 rm -rf /var/cache/yum
 
 COPY --from=builder --chown=root:wheel /opt/anaconda /opt/anaconda
-COPY --from=builder --chown=root:wheel /home/astrosoft /home/astrosoft
+COPY --from=builder --chown=root:wheel /home/astrosoft/ftools /home/astrosoft/ftools
+COPY --from=builder --chown=root:wheel /home/astrosoft/tempo /home/astrosoft/tempo
+COPY --from=builder --chown=root:wheel /home/astrosoft/tempo2 /home/astrosoft/tempo2
 
 RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
 fermi        ALL=NOPASSWD: ALL\n\

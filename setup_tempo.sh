@@ -9,4 +9,3 @@ make && make install
 cd ../
 rm -rf tempo
 chmod -R g+rwx $TEMPO
-chown -R :wheel $TEMPO
