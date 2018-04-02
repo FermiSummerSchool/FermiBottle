@@ -25,7 +25,6 @@ yum install -y \
   sudo \
   tar \
   vim \
-  vim-X11 \
   which \
   && \
 yum clean all && \
@@ -87,6 +86,7 @@ yum install -y \
   sudo \
   tar \
   vim \
+  vim-X11 \
   which \
   xorg-x11-apps \
 && \
