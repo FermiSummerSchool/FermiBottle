@@ -25,6 +25,7 @@ yum install -y \
   sudo \
   tar \
   vim \
+  vim-X11 \
   which \
   && \
 yum clean all && \
