@@ -53,13 +53,25 @@ ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 
+
+
+
+
+
+
+
 # copy build products into new layer
 FROM centos:6
 MAINTAINER "Fermi LAT Collaboration"
-
 VOLUME ["/data"]
-
 CMD [ "/bin/bash" ]
+
+ENV ASTROPFX /home/astrosoft
+RUN mkdir -p $ASTROPFX
+COPY --from=builder --chown=root:wheel /opt/anaconda /opt/anaconda
+COPY --from=builder --chown=root:wheel $ASTROPFX/ftools $ASTROPFX/ftools
+COPY --from=builder --chown=root:wheel $ASTROPFX/tempo  $ASTROPFX/tempo
+COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 
 RUN sed -i '/tsflags=nodocs/d' /etc/yum.conf && \
 yum update -y && \
@@ -92,14 +104,6 @@ yum install -y \
 && \
 yum clean all && \
 rm -rf /var/cache/yum
-
-COPY --from=builder --chown=root:wheel /opt/anaconda /opt/anaconda
-
-ENV ASTROPFX /home/astrosoft
-RUN mkdir -p $ASTROPFX
-COPY --from=builder --chown=root:wheel $ASTROPFX/ftools $ASTROPFX/ftools
-COPY --from=builder --chown=root:wheel $ASTROPFX/tempo  $ASTROPFX/tempo
-COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 
 RUN echo -e '%wheel        ALL=(ALL)       NOPASSWD: ALL\n\
 fermi        ALL=NOPASSWD: ALL\n\
