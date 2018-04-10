@@ -6,10 +6,8 @@ rm anaconda.sh
 # echo "export PATH=${CONDAPFX}/bin:$PATH" >> ${HOME}/.bashrc
 export PATH=${CONDAPFX}/bin:$PATH
 conda install --yes -c conda-forge gosu tini
-conda create --name fermi -c conda-forge -c fermi_dev_externals \
+conda create --name fermi -c conda-forge \
   fermipy \
-  fermitools \
-  fermitools-data \
   jupyter \
   libpng \
   pgplot \
