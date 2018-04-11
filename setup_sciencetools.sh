@@ -15,10 +15,9 @@ cd /
 
 ## Build the Sciencetools
 mkdir -p ${STPFX}
-sed -i -e 's/h_external_components=.*/h_external_components="clhep cppunit f2c\
-fftw gtversion python gsl healpix root minuit2 swig\
-xerces"/g' /${STNAME}/BUILD_DIR/configure
+sed -i -e 's/h_external_components=.*/h_external_components="clhep cppunit f2c fftw gtversion python gsl healpix root minuit2 swig xerces"/g' /${STNAME}/BUILD_DIR/configure
 cd ${STNAME}/BUILD_DIR
 ./configure --prefix=${STPFX} --with-root --enable-collapse
-./hmake && ./hmake install
+./hmake
+./hmake install
 chmod -R g+rwx $STPFX
