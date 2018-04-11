@@ -10,10 +10,12 @@ yum install -y \
   gcc-c++ \
   gcc-gfortran \
   git \
-  libXext-devel \
-  libXrender-devel \
   libSM-devel \
   libX11-devel \
+  libXext-devel \
+  libXft-devel \
+  libXpm-devel \
+  libXrender-devel \
   libXt-devel \
   make \
   mesa-libGL-devel \
@@ -26,7 +28,9 @@ yum install -y \
   tar \
   vim \
   which \
-  zlib-devel
+  zlib-devel && \
+yum clean all && \
+rm -rf /var/cache/yum
 
 ENV ASTROPFX /home/astrosoft
 RUN mkdir -p $ASTROPFX
@@ -40,31 +44,24 @@ ENV STPFX $ASTROPFX/sciencetools
 
 RUN curl -s -L \
   https://fermi.gsfc.nasa.gov/ssc/data/analysis/software/v11r5p3/ScienceTools-v11r5p3-fssc-20180124-source.tar.gz > st.tar.gz && \
-  tar zxf st.tar.gz && rm st.tar.gz
+  tar zxf st.tar.gz && rm -f st.tar.gz
 
 ## Update Python
-RUN cd ${STNAME}/external && \
+RUN cd /${STNAME}/external && \
   rm -rf python && \
   curl -s -L https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz > python.tgz && \
   tar zxf python.tgz && \
-  rm python.tgz && \
-  mv Python-2.7.14 python
-
-## Prep the tools
-RUN mkdir -p ${STPFX} && \
- sed -i -e 's/h_components=\"clhep\ cppunit\ f2c\ fftw\ python\ distribute\ d2to1\
- stsci.distutils\ pmw\ lapack\ numpy\ pyfits\ pywcs\ scipy\ matplotlib\ gsl\
- healpix\ root\ minuit2\ swig\ xerces\ pyds9\"/h_components=\"clhep\ cppunit\ f2c\ fftw\ python\ gsl\ healpix\ root\
- minuit2\ swig\ xerces\"/g' /${STNAME}/BUILD_DIR/configure &&\
- sed -i -e 's/h_components=\"clhep\ cppunit\ f2c\ fftw\ python\ distribute\ d2to1\
- stsci.distutils\ pmw\ lapack\ numpy\ pyfits\ pywcs\ scipy\ matplotlib\ gsl\
- healpix\ root\ minuit2\ swig\ xerces\ pyds9\"/h_components=\"clhep\ cppunit\ f2c\ fftw\ python\ gsl\ healpix\ root\
- minuit2\ swig\ xerces\"/g' /${STNAME}/external/BUILD_DIR/configure
+  rm -f python.tgz && \
+  mv Python-2.7.14 python && cd /
 
 ## Build the Sciencetools
-RUN cd ${STNAME}/BUILD_DIR && \
- ./configure --prefix=${STPFX} &&\
- ./hmake && ./hmake install
+RUN mkdir -p ${STPFX} &&\
+ sed -i -e 's/h_external_components=.*/h_external_components="clhep cppunit f2c\
+ fftw gtversion python gsl healpix root minuit2 swig\
+ xerces"/g' /${STNAME}/BUILD_DIR/configure && \
+ cd ${STNAME}/BUILD_DIR && \
+ ./configure --with-root --prefix=${STPFX} &&\
+ ./hmake && ./hmake install && cd /
 
 ## Install pip
 RUN curl -s -L https://bootstrap.pypa.io/get-pip.py > get-pip.py && \
@@ -110,10 +107,12 @@ yum install -y \
   gcc-gfortran \
   gedit \
   git \
-  libXext \
-  libXrender \
   libSM \
   libX11 \
+  libXext \
+  libXft \
+  libXpm \
+  libXrender \
   libXt \
   make \
   mesa-libGL \
