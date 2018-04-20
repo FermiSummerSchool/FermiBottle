@@ -4,7 +4,7 @@ RUN yum update -y && \
 yum install -y \
   autoconf \
   automake \
-  bzip2 \
+  bzip2-devel \
   emacs \
   gcc \
   gcc-c++ \
@@ -76,12 +76,12 @@ RUN source $FERMI_DIR/fermi-init.sh && \
   pip install pmw pyfits pywcs pyds9
 
 # Heasarc Ftools
-# COPY setup_ftools.sh $HOME/setup_ftools.sh
-# RUN sh setup_ftools.sh && rm setup_ftools.sh
+COPY setup_ftools.sh $HOME/setup_ftools.sh
+RUN sh setup_ftools.sh && rm setup_ftools.sh
 
-# # Tempo
-# COPY setup_tempo.sh $HOME/setup_tempo.sh
-# RUN sh setup_tempo.sh && rm setup_tempo.sh
+# Tempo
+COPY setup_tempo.sh $HOME/setup_tempo.sh
+RUN sh setup_tempo.sh && rm setup_tempo.sh
 
 # # Tempo2
 # ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
@@ -98,7 +98,9 @@ CMD [ "/bin/bash" ]
 ENV ASTROPFX /home/astrosoft
 RUN mkdir -p $ASTROPFX
 ENV FERMI_DIR $ASTROPFX/sciencetools/x86_64-unknown-linux-gnu-libc2.12
-# COPY --from=builder --chown=root:wheel $ASTROPFX/ftools $ASTROPFX/ftools
+COPY --from=builder --chown=root:wheel $ASTROPFX/ftools $ASTROPFX/ftools
+COPY --from=builder --chown=root:wheel $ASTROPFX/tempo $ASTROPFX/tempo
+# COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 COPY --from=builder --chown=root:wheel $ASTROPFX/sciencetools $ASTROPFX/sciencetools
 
 RUN sed -i '/tsflags=nodocs/d' /etc/yum.conf && \

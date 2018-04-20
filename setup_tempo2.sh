@@ -26,6 +26,11 @@
 
 # in your build area.
 TEMPO2PFX=$ASTROPFX/tempo2
+XINC="/usr/include"
+XLIB="/usr/lib64"
+CFITSIO="$ASTROPFX/ftools/$PLAT"
+FFTW="$ASTROPFX/ftools/$PLAT"
+GSL="$ASTROPFX/ftools/$PLAT"
 mkdir -p $TEMPO2PFX
 curl -s -L https://bitbucket.org/psrsoft/tempo2/downloads/tempo2-2018.02.1.tar.gz > tempo2.tar.gz
 tar zxf tempo2.tar.gz
@@ -35,12 +40,12 @@ cp -r T2runtime $TEMPO2PFX
 ./configure \
   F77=gfortran \
   --prefix=$TEMPO2PFX \
-  --x-includes=$FERMIPFX/include \
-  --x-libraries="$FERMIPFX/lib -lXdmcp" \
+  --x-includes=$XINC \
+  --x-libraries="${XLIB} -lXdmcp" \
   --with-pgplot-extra="-lX11 -lXdmcp -lz" \
-  --with-cfitsio-dir=$FERMIPFX \
-  --with-fftw3-dir=$FERMIPFX \
-  --with-gsl-prefix=$FERMIPFX \
+  --with-cfitsio-dir=$CFITSIO \
+  --with-fftw3-dir=$FFTW \
+  --with-gsl-prefix=$GSL \
   --with-x \
   CFLAGS="-fPIC -I$FERMIPFX/include -I$FERMIPFX/include/pgplot" \
   FFLAGS=-fPIC \
