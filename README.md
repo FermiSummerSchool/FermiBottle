@@ -1,4 +1,4 @@
-# FermiBottle documentation
+# STBottle documentation
 
 ## Install instructions
 
