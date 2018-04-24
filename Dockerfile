@@ -83,10 +83,26 @@ RUN sh setup_ftools.sh && rm setup_ftools.sh
 COPY setup_tempo.sh $HOME/setup_tempo.sh
 RUN sh setup_tempo.sh && rm setup_tempo.sh
 
-# # Tempo2
-# ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
-# COPY setup_tempo2.sh $HOME/setup_tempo2.sh
-# RUN sh setup_tempo2.sh && rm setup_tempo2.sh
+# pgplot
+RUN curl -s -L ftp://ftp.astro.caltech.edu/pub/pgplot/pgplot5.2.tar.gz > pgplot5.2.tar.gz &&\
+ tar zxvf pgplot5.2.tar.gz &&\
+ rm -rf /pgplot5.2.tar.gz &&\
+ mkdir -p $ASTROPFX/pgplot &&\
+ cd $ASTROPFX/pgplot &&\
+ cp /pgplot/drivers.list . &&\
+ sed -i -e '71s/!/ /g' drivers.list &&\
+ sed -i -e '72s/!/ /g' drivers.list &&\
+ /pgplot/makemake /pgplot linux g77_gcc &&\
+ sed -i -e 's/^FCOMPL=g77/FCOMPL=gfortran/g' makefile &&\
+ make && make cpg && make clean &&\
+ chmod -R g+rwx $ASTROPFX/pgplot &&\
+ rm -rf /pgplot
+
+# Tempo2
+RUN yum install -y libXdmcp-devel libpng-devel
+ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
+COPY setup_tempo2.sh $HOME/setup_tempo2.sh
+RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 
 
 # copy build products into new layer
@@ -100,8 +116,9 @@ RUN mkdir -p $ASTROPFX
 ENV FERMI_DIR $ASTROPFX/sciencetools/x86_64-unknown-linux-gnu-libc2.12
 COPY --from=builder --chown=root:wheel $ASTROPFX/ftools $ASTROPFX/ftools
 COPY --from=builder --chown=root:wheel $ASTROPFX/tempo $ASTROPFX/tempo
-# COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 COPY --from=builder --chown=root:wheel $ASTROPFX/sciencetools $ASTROPFX/sciencetools
+COPY --from=builder --chown=root:wheel $ASTROPFX/pgplot $ASTROPFX/pgplot
+COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 
 RUN sed -i '/tsflags=nodocs/d' /etc/yum.conf && \
 yum update -y && \
@@ -114,8 +131,10 @@ yum install -y \
   gcc-gfortran \
   gedit \
   git \
+  libpng-devel \
   libSM \
   libX11 \
+  libXdmcp-devel \
   libXext \
   libXft \
   libXpm \
