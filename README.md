@@ -58,10 +58,10 @@ Open a PowerShell or command prompt
 
 On the command line:
 
-1. run `ipconfig /all` and find the IP address for your primary network connection.  Note this down somewhere.
-2. select an existing directory to store your data and not the path (e.g. d:/data/FERMI)
-3. run `set-variable -name DISPLAY -value <ip address>:0.0`
-4. start the docker container by running:
+1. Run `ipconfig /all` and find the IP address for your primary network connection.  Note this down somewhere.
+2. Select an existing directory to store your data and note the path (e.g. d:/data/FERMI)
+3. Run `set-variable -name DISPLAY -value <ip address>:0.0`
+4. Start the docker container by running:
 
 ```
 docker run -it \
