@@ -51,6 +51,7 @@ Run XLaunch
 2. No changes on the second screen, click "Next".
 3. Select "No Access Control" on screen three.  Click "Next".
 4. If you want to not have to go through this each time, select "Save Configuration" and name your .xlaunch file.  You can then just double click this file to start in the future.
+5. Click "Finish" to start the X11 server.
 
 Start Docker (if it's not already running)
 
