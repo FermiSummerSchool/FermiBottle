@@ -1,4 +1,4 @@
-# FermiBottle documentation
+# STBottle documentation
 
 ## Install instructions
 
@@ -6,11 +6,11 @@
 
 ##### Using DockerHub
 
-`docker pull areustle/fermibottle`
+`docker pull areustle/stbottle`
 
 ##### Using local tarball
 
-`unzip fermibottle.tar.zip && docker load < fermibottle.tar`
+`unzip stbottle.tar.zip && docker load < stbottle.tar`
 
 ### Run the image to create a container (Linux)
 
@@ -21,7 +21,7 @@ docker run -it \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`:/data \
 -p 8888:8888 \
-areustle/fermibottle
+areustle/stbottle
 ```
 
 ### Run the image to create a container (MacOS)
@@ -39,7 +39,7 @@ docker run -it \
 -e DISPLAY=docker.for.mac.localhost:0 \
 -v `pwd`:/data \
 -p 8888:8888 \
-areustle/fermibottle
+areustle/stbottle
 ```
 
 ### Run the image to create a container (Windows)
@@ -63,20 +63,20 @@ Run a jupyter notebook from within the container with
 
 ## Build instructions
 
-`cd FermiBottle && docker image build -t fermibottle .`
+`cd FermiBottle && docker image build -t stbottle .`
 
 ## Sharing instructions
 
 ### Create a local tarball
 
- 1. Save a built image `docker save fermibottle -o fermibottle.tar`
- 1. Compress it with zip, to be nice to windows: `zip fermibottle.tar`
+ 1. Save a built image `docker save stbottle -o stbottle.tar`
+ 1. Compress it with zip, to be nice to windows: `zip stbottle.tar`
 
 ### Upload to dockerhub 
 
  1. Find the hash of your image `docker images`
  1. Tag the image `docker tag IMAGE_HASH areustle/fermibottle:TAGNAME`
- 1. Push to dockerhub `docker push areustle/fermibottle`
+ 1. Push to dockerhub `docker push areustle/stbottle`
 
 
 ## Developers notes
