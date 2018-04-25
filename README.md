@@ -43,37 +43,7 @@ areustle/fermibottle
 ```
 
 ### Run the image to create a container (Windows)
-Install Xming (https://sourceforge.net/projects/xming/).  Be sure to install the XLaunch application and select the "Associate XLaunch with the .xlaunch file extension" option during installation.
-
-Run XLaunch
-
-1. No changes on the first screen, click "Next".
-2. No changes on the second screen, click "Next".
-3. Select "No Access Control" on screen three.  Click "Next".
-4. If you want to not have to go through this each time, select "Save Configuration" and name your .xlaunch file.  You can then just double click this file to start in the future.
-5. Click "Finish" to start the X11 server.
-
-Start Docker (if it's not already running)
-
-Open a PowerShell or command prompt
-
-On the command line:
-
-1. Run `ipconfig /all` and find the IP address for your primary network connection.  Note this down somewhere.
-2. Select an existing directory to store your data and note the path (e.g. d:/data/FERMI)
-3. Run `set-variable -name DISPLAY -value <ip address>:0.0`
-4. Start the docker container by running:
-
-```
-docker run -it \
--e DISPLAY=$DISPLAY \
--v <path to data>:/data \
--p 8888:8888 \
-areustle/fermibottle
-```
-
-*Note: If the selected directory isn't set up for sharing, Docker will ask if you want to share it.  Select 'Share' and then enter your password at the prompt.  You need to be an administrator
-	in order to do this.*
+For instructions on running on Windows, see the [Instructions for installing Docker on Windows](https://github.com/FermiSummerSchool/FermiBottle/wiki/Instructions-for-installing-Docker-on-Windows) wikipage 
 
 
 ## Usage instructions
