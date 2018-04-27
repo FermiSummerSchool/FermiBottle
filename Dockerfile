@@ -10,8 +10,10 @@ yum install -y \
   gcc-c++ \
   gcc-gfortran \
   git \
+  libpng-devel \
   libSM-devel \
   libX11-devel \
+  libXdmcp-devel \
   libXext-devel \
   libXft-devel \
   libXpm-devel \
@@ -25,6 +27,7 @@ yum install -y \
   perl \
   perl-ExtUtils-MakeMaker \
   readline-devel \
+  sqlite-devel \
   sudo \
   tar \
   vim \
@@ -37,34 +40,16 @@ rm -rf /var/cache/yum
 ENV ASTROPFX /home/astrosoft
 RUN mkdir -p $ASTROPFX
 
+# Heasarc Ftools
+COPY setup_ftools.sh $HOME/setup_ftools.sh
+RUN sh setup_ftools.sh && rm setup_ftools.sh
+
 # ScienceTools
 ENV STNAME ScienceTools-v11r5p3-fssc-20180124
 ENV PLAT x86_64-unknown-linux-gnu-libc2.12
 ENV STPFX $ASTROPFX/sciencetools
 COPY setup_sciencetools.sh $HOME/setup_sciencetools.sh
 RUN sh setup_sciencetools.sh && rm setup_sciencetools.sh
-
-# RUN curl -s -L \
-#   https://fermi.gsfc.nasa.gov/ssc/data/analysis/software/v11r5p3/ScienceTools-v11r5p3-fssc-20180124-source.tar.gz > st.tar.gz && \
-#   tar zxf st.tar.gz && rm -f st.tar.gz
-
-# ## Update Python
-# RUN cd /${STNAME}/external && \
-#   rm -rf python && \
-#   curl -s -L https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz > python.tgz && \
-#   tar zxf python.tgz && \
-#   rm -f python.tgz && \
-#   mv Python-2.7.14 python && cd /
-
-# ## Build the Sciencetools
-# RUN mkdir -p ${STPFX} &&\
-#  sed -i -e 's/h_external_components=.*/h_external_components="clhep cppunit f2c\
-#  fftw gtversion python gsl healpix root minuit2 swig\
-#  xerces"/g' /${STNAME}/BUILD_DIR/configure && \
-#  cd ${STNAME}/BUILD_DIR && \
-#  ./configure --prefix=${STPFX} --with-root --enable-collapse &&\
-#  ./hmake && ./hmake install && \
-#  chmod -R g+rwx $STPFX
 
 ## Install pip
 ENV FERMI_DIR ${STPFX}/${PLAT}
@@ -73,11 +58,7 @@ RUN source $FERMI_DIR/fermi-init.sh && \
   which python && python --version && \
   curl https://bootstrap.pypa.io/get-pip.py | python && \
   pip install numpy scipy astropy matplotlib jupyter pysu &&\
-  pip install pmw pyfits pywcs pyds9
-
-# Heasarc Ftools
-COPY setup_ftools.sh $HOME/setup_ftools.sh
-RUN sh setup_ftools.sh && rm setup_ftools.sh
+  pip install pmw pyfits pywcs pyds9 pysqlite
 
 # Tempo
 COPY setup_tempo.sh $HOME/setup_tempo.sh
@@ -99,7 +80,6 @@ RUN curl -s -L ftp://ftp.astro.caltech.edu/pub/pgplot/pgplot5.2.tar.gz > pgplot5
  rm -rf /pgplot
 
 # Tempo2
-RUN yum install -y libXdmcp-devel libpng-devel
 ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
@@ -131,10 +111,10 @@ yum install -y \
   gcc-gfortran \
   gedit \
   git \
-  libpng-devel \
+  libpng \
   libSM \
   libX11 \
-  libXdmcp-devel \
+  libXdmcp \
   libXext \
   libXft \
   libXpm \
@@ -146,7 +126,9 @@ yum install -y \
   openssl \
   patch \
   perl \
+  perl-ExtUtils-MakeMaker \
   readline\
+  sqlite \
   sudo \
   tar \
   vim \
@@ -154,8 +136,7 @@ yum install -y \
   wget \
   which \
   xorg-x11-apps \
-  zlib-devel \
-&& \
+  zlib-devel && \
 yum clean all && \
 rm -rf /var/cache/yum
 
