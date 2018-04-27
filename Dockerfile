@@ -84,6 +84,11 @@ ENV TEMPO2 $ASTROPFX/tempo2/T2runtime
 COPY setup_tempo2.sh $HOME/setup_tempo2.sh
 RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 
+# DS9
+RUN mkdir $ASTROPFX/bin &&\
+ cd $ASTROPFX/bin &&\
+ curl http://ds9.si.edu/download/centos6/ds9.centos6.7.6.tar.gz | tar zxv
+
 
 # copy build products into new layer
 FROM centos:6
@@ -99,6 +104,7 @@ COPY --from=builder --chown=root:wheel $ASTROPFX/tempo $ASTROPFX/tempo
 COPY --from=builder --chown=root:wheel $ASTROPFX/sciencetools $ASTROPFX/sciencetools
 COPY --from=builder --chown=root:wheel $ASTROPFX/pgplot $ASTROPFX/pgplot
 COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
+COPY --from=builder --chown=root:wheel $ASTROPFX/bin $ASTROPFX/bin
 
 RUN sed -i '/tsflags=nodocs/d' /etc/yum.conf && \
 yum update -y && \
