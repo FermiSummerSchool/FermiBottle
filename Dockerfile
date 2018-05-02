@@ -58,7 +58,7 @@ RUN source $FERMI_DIR/fermi-init.sh && \
   which python && python --version && \
   curl https://bootstrap.pypa.io/get-pip.py | python && \
   pip install numpy scipy astropy matplotlib jupyter pysu &&\
-  pip install pmw pyfits pywcs pyds9 pysqlite
+  pip install pmw pyfits pywcs pyds9 pysqlite fermipy
 
 # Tempo
 COPY setup_tempo.sh $HOME/setup_tempo.sh
