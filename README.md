@@ -56,6 +56,8 @@ Restart a stopped container in the background with `docker start CONTAINER_ID` o
 
 Attach to a running container (get into the shell) with `docker attach CONTAINER_ID` or `docker attach CONTAINER_NAME`
 
+Not that you might need to prepend the attach command with `xhost + 127.0.0.1 &&` when running on a mac.
+
 #### Jupyter Notebooks
 
 Run a jupyter notebook from within the container with 
