@@ -6,7 +6,7 @@
 
 ##### Using DockerHub
 
-`docker pull areustle/fermibottle`
+`docker pull fssc/fermibottle`
 
 ##### Using local tarball
 
@@ -21,7 +21,7 @@ docker run -it \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v `pwd`:/data \
 -p 8888:8888 \
-areustle/fermibottle
+fssc/fermibottle
 ```
 
 ### Run the image to create a container (MacOS)
@@ -39,7 +39,7 @@ docker run -it \
 -e DISPLAY=docker.for.mac.localhost:0 \
 -v `pwd`:/data \
 -p 8888:8888 \
-areustle/fermibottle
+fssc/fermibottle
 ```
 
 ### Run the image to create a container (Windows)
@@ -62,10 +62,11 @@ Not that you might need to prepend the attach command with `xhost + 127.0.0.1 &&
 
 Run a jupyter notebook from within the container with 
 `jupyter notebook --ip 0.0.0.0 --no-browser`
+this is aliased in the container to `notebook`
 
 ## Build instructions
 
-`cd FermiBottle && docker image build -t fermibottle .`
+`cd FermiBottle && docker image build -t fssc/fermibottle .`
 
 ## Sharing instructions
 
@@ -77,8 +78,8 @@ Run a jupyter notebook from within the container with
 ### Upload to dockerhub 
 
  1. Find the hash of your image `docker images`
- 1. Tag the image `docker tag IMAGE_HASH areustle/fermibottle:TAGNAME`
- 1. Push to dockerhub `docker push areustle/fermibottle`
+ > 1. Tag the image `docker tag IMAGE_HASH fssc/fermibottle:TAGNAME`
+ 1. Push to dockerhub `docker push fssc/fermibottle`
 
 
 ## Developers notes
