@@ -19,7 +19,7 @@
 # into another centos:6 container at the end of the script.
 FROM centos:6 as builder
 
-# Install necessary dev packages from YUM
+# Install necessary dev packages from YUM, in alphabetical order
 RUN yum update -y && \
 yum install -y \
   autoconf \
@@ -200,8 +200,9 @@ fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
 # The entrypoint script is very important. It is the starter script run
 # by docker to prepare a specific container for an individual user.
 # The entry point will set the UID of the fermi user inside the container
-# to be the same as the host user accounts UID. That way the user will have
-# ownership over the file once they leave the container.
+# to be the same as the host user account's UID. That way the user will have
+# ownership over any files they create in the shared directory once they 
+# leave the container.
 #
 # Also the entrypoint will prepare the environment, create the new
 # user directory, source the ScienceTools and the Ftools, and give
