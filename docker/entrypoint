@@ -28,7 +28,7 @@ ln -s /home/astrosoft /home/fermi/astrosoft
 chown fermi:fermi $HOME/astrosoft
 chown fermi:fermi $HOME
 
-echo "alias notebook='jupyter notebook --ip 0.0.0.0 --no-browser'" >> $HOME/.bashrc
+echo "alias notebook='jupyter notebook --ip 127.0.0.1 --no-browser'" >> $HOME/.bashrc
 
 cd $HOME
 
