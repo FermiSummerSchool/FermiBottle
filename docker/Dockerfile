@@ -117,6 +117,10 @@ RUN mkdir $ASTROPFX/bin &&\
  cd $ASTROPFX/bin &&\
  curl http://ds9.si.edu/download/centos6/ds9.centos6.7.6.tar.gz | tar zxv
 
+# RMFIT
+RUN cd /usr/local/bin &&\
+ curl https://fermi.gsfc.nasa.gov/ssc/data/analysis/rmfit/rmfit_v432_64bit.tar.gz | tar zxv
+
 
 ##########################################################################
 #                     End Builder, Start final Product
@@ -147,6 +151,7 @@ COPY --from=builder --chown=root:wheel $ASTROPFX/sciencetools $ASTROPFX/sciencet
 COPY --from=builder --chown=root:wheel $ASTROPFX/pgplot $ASTROPFX/pgplot
 COPY --from=builder --chown=root:wheel $ASTROPFX/tempo2 $ASTROPFX/tempo2
 COPY --from=builder --chown=root:wheel $ASTROPFX/bin $ASTROPFX/bin
+COPY --from=builder --chown=root:wheel /usr/local/bin/rmfit_v432 /usr/local/bin/rmfit_v432
 
 # Now install a bunch of Yum packages, not the devel versions.
 RUN sed -i '/tsflags=nodocs/d' /etc/yum.conf && \
@@ -166,6 +171,7 @@ yum install -y \
   libXdmcp \
   libXext \
   libXft \
+  libXp \
   libXpm \
   libXrender \
   libXt \
@@ -212,10 +218,5 @@ ENTRYPOINT ["/opt/docker/bin/entrypoint"]
 ###############################################################################
 ####################### NEW ADDITIONS HERE ####################################
 ###############################################################################
-
-# RMFIT
-RUN yum install -y libXp &&\
- cd $ASTROPFX &&\
- curl https://fermi.gsfc.nasa.gov/ssc/data/analysis/rmfit/rmfit_v432_64bit.tar.gz | tar zxv
 
 

@@ -16,8 +16,8 @@ export USER=fermi
 export LOGNAME=fermi
 export MAIL=/var/spool/mail/fermi
 export ASTROSOFT=$HOME/astrosoft
-export PATH=$ASTROSOFT/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export PATH=$ASTROSOFT/tempo/bin:$ASTROSOFT/tempo2/bin:$ASTROSOFT/pgplot:$ASTROSOFT/rmfit_v432:$PATH
+export PATH=$ASTROSOFT/bin:/usr/local/bin/rmfit_v432:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH=$ASTROSOFT/tempo/bin:$ASTROSOFT/tempo2/bin:$ASTROSOFT/pgplot:$PATH
 export HEADAS=$HOME/astrosoft/ftools/x86_64-pc-linux-gnu-libc2.12
 export TEMPO2=$HOME/astrosoft/tempo2/T2runtime
 export FERMI_DIR=$HOME/astrosoft/sciencetools/x86_64-unknown-linux-gnu-libc2.12
@@ -28,7 +28,7 @@ ln -s /home/astrosoft /home/fermi/astrosoft
 chown fermi:fermi $HOME/astrosoft
 chown fermi:fermi $HOME
 
-echo "alias notebook='jupyter notebook --ip 127.0.0.1 --no-browser'" >> $HOME/.bashrc
+echo "alias notebook='jupyter notebook --ip 00.00.00.00 --no-browser'" >> $HOME/.bashrc
 
 cd $HOME
 
