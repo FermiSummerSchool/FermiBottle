@@ -1,10 +1,10 @@
 # FermiBottle DockerFile
 # maintained by the FSSC
 # Author: Alex Resutle
-# 
+#
 # This is a two stage dockerfile building the fermi science tools
-# and related software in a builder container, then copying 
-# binaries to the final product container. 
+# and related software in a builder container, then copying
+# binaries to the final product container.
 #
 # Build instructions are split variously across separate install
 # scripts, or continuous RUN lines.
@@ -79,7 +79,7 @@ RUN sh setup_sciencetools.sh && rm setup_sciencetools.sh
 
 # Install pip and necessary tools.
 # This should really be its own script, but it isn't because
-# of no good reason. 
+# of no good reason.
 ENV FERMI_DIR ${STPFX}/${PLAT}
 RUN source $FERMI_DIR/fermi-init.sh && \
   echo $FERMI_DIR && \
@@ -116,7 +116,6 @@ RUN sh setup_tempo2.sh && rm setup_tempo2.sh
 RUN mkdir $ASTROPFX/bin &&\
  cd $ASTROPFX/bin &&\
  curl http://ds9.si.edu/download/centos6/ds9.centos6.7.6.tar.gz | tar zxv
-
 
 
 ##########################################################################
@@ -201,7 +200,7 @@ fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
 # by docker to prepare a specific container for an individual user.
 # The entry point will set the UID of the fermi user inside the container
 # to be the same as the host user account's UID. That way the user will have
-# ownership over any files they create in the shared directory once they 
+# ownership over any files they create in the shared directory once they
 # leave the container.
 #
 # Also the entrypoint will prepare the environment, create the new
@@ -209,3 +208,14 @@ fermi ALL=NOPASSWD: /usr/bin/yum' >> /etc/sudoers
 # The user a nice colorful shell.
 COPY entrypoint /opt/docker/bin/entrypoint
 ENTRYPOINT ["/opt/docker/bin/entrypoint"]
+
+###############################################################################
+####################### NEW ADDITIONS HERE ####################################
+###############################################################################
+
+# RMFIT
+RUN yum install -y libXp &&\
+ cd $ASTROPFX &&\
+ curl https://fermi.gsfc.nasa.gov/ssc/data/analysis/rmfit/rmfit_v432_64bit.tar.gz | tar zxv
+
+
