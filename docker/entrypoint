@@ -28,7 +28,24 @@ ln -s /home/astrosoft /home/fermi/astrosoft
 chown fermi:fermi $HOME/astrosoft
 chown fermi:fermi $HOME
 
-echo "alias notebook='jupyter notebook --ip 00.00.00.00 --no-browser'" >> $HOME/.bashrc
+
+echo "#################
+# Added by entrypoint at date: `date`
+# Environment variables
+export HOME=${HOME}
+export USER=${USER}
+export LOGNAME=${LOGNAME}
+export MAIL=${MAIL}
+export ASTROSOFT=${ASTROSOFT}
+export HEADAS=${HEADAS}
+export TEMPO2=${TEMPO}
+export FERMI_DIR=${FERMI_DIR}
+export PATH=${PATH}:\$PATH
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:\$LD_LIBRARY_PATH
+
+# Aliases
+alias notebook='jupyter notebook --ip 00.00.00.00 --no-browser'
+" >> $HOME/.bashrc
 
 cd $HOME
 
