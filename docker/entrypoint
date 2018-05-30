@@ -4,6 +4,10 @@
 # to mounted volumes
 # Adapted from https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
 
+if [ ! -e /.fermibottle ]; then
+  touch -d "1 minute ago" /.fermibottle
+fi
+
 USER_ID=${HOST_USER_ID:-9001}
 # echo $HOST_USER_ID
 # echo $USER_ID
@@ -27,9 +31,10 @@ export LD_LIBRARY_PATH=$ASTROSOFT/pgplot
 ln -s /home/astrosoft /home/fermi/astrosoft
 chown fermi:fermi $HOME/astrosoft
 chown fermi:fermi $HOME
+cd $HOME
 
-
-echo "#################
+if [ ! .bash_profile -nt /.fermibottle ]; then
+  echo "#################
 # Added by entrypoint at date: `date`
 # Environment variables
 export HOME=${HOME}
@@ -38,16 +43,25 @@ export LOGNAME=${LOGNAME}
 export MAIL=${MAIL}
 export ASTROSOFT=${ASTROSOFT}
 export HEADAS=${HEADAS}
-export TEMPO2=${TEMPO}
+export TEMPO2=${TEMPO2}
 export FERMI_DIR=${FERMI_DIR}
 export PATH=${PATH}:\$PATH
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:\$LD_LIBRARY_PATH
 
+# Source the tools!
+. \$HEADAS/headas-init.sh
+. \$FERMI_DIR/fermi-init.sh
+
+" >> $HOME/.bash_profile
+fi
+
+# Aliases
+if [ ! .bashrc -nt /.fermibottle ]; then
+  echo "
 # Aliases
 alias notebook='jupyter notebook --ip 00.00.00.00 --no-browser'
 " >> $HOME/.bashrc
-
-cd $HOME
+fi
 
 # Source everything that needs to be.
 . $HEADAS/headas-init.sh
