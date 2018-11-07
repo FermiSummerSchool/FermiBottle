@@ -1,3 +1,9 @@
+# THIS REPOSITORY IS NOW DEFUNCT
+
+All future development will occur in the official fermi-lat github organization at https://github.com/fermi-lat/FermiBottle
+
+
+
 # FermiBottle Docker Container
 
 FermiBottle is a Docker container and analysis environment provided by the Fermi Science Support Center. 
